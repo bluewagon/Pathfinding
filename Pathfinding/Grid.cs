@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Pathfinding
 {
@@ -30,10 +31,37 @@ namespace Pathfinding
             }
         }
 
+        public Grid(string levelName)
+        {
+            List<List<Point>> map = new List<List<Point>>();
+            using (StreamReader reader = File.OpenText($"Maps\\{levelName}.txt"))
+            {
+                string line;
+                int size_y = 0;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    map.Add(new List<Point>());
+                    int size_x = line.Length;
+                    int x = 0;
+                    foreach (char c in line)
+                    {
+                        map[size_y].Add(new Point(x, size_y));
+                        x++;
+                    }
+                    size_y++;
+                }
+            }
+        }
+
         public bool InBounds(int x, int y)
         {
             return 0 <= x && x < sizeX
                 && 0 <= y && y < sizeY;
+        }
+
+        public bool InBounds(Point point)
+        {
+            return InBounds(point.x, point.y);
         }
 
         public IEnumerable<Point> Neighbors(Point origin)

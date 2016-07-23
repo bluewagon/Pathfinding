@@ -11,7 +11,7 @@ namespace Pathfinding
 
         public Dictionary<Point, int> Search(Grid grid, Point origin, int? maxMoves)
         {
-            if (grid == null || origin == null || !grid.InBounds(origin.x, origin.y))
+            if (grid == null || origin == null || !grid.InBounds(origin))
             {
                 return null;
             }
@@ -28,16 +28,13 @@ namespace Pathfinding
                 {
                     if (!distance.ContainsKey(neighbor))
                     {
-                        if (maxMoves.HasValue)
+                        int length = distance[current] + 1;
+                        if (length > maxMoves)
                         {
-                            int length = distance[current] + 1;
-                            if (length > maxMoves)
-                            {
-                                continue;
-                            }
+                            continue;
                         }
                         frontier.Enqueue(neighbor);
-                        distance.Add(neighbor, 1 + distance[current]);
+                        distance.Add(neighbor, length);
                     }
                 }
             }
