@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Pathfinding
@@ -33,19 +34,19 @@ namespace Pathfinding
 
         public Grid(string levelName)
         {
-            List<List<Point>> map = new List<List<Point>>();
+            List<List<Tile>> map = new List<List<Tile>>();
             using (StreamReader reader = File.OpenText($"Maps\\{levelName}.txt"))
             {
                 string line;
                 int size_y = 0;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    map.Add(new List<Point>());
+                    map.Add(new List<Tile>());
                     int size_x = line.Length;
                     int x = 0;
                     foreach (char c in line)
                     {
-                        map[size_y].Add(new Point(x, size_y));
+                        map[size_y].Add(new Tile(new Point(x, size_y), Int32.Parse(c.ToString())));
                         x++;
                     }
                     size_y++;
