@@ -6,9 +6,9 @@ namespace Pathfinding
     {
         static void Main(string[] args)
         {
-            Grid grid = new Grid("Level1");
+            Map map = new Map("Level2");
             BreadthFirstSearch search = new BreadthFirstSearch();
-            Dictionary<Point, int> moves = search.Search(grid, new Point(0,0));
+            Dictionary<Point, int> moves = search.Search(map, new Point(0,0), 7);
         }
     }
 }

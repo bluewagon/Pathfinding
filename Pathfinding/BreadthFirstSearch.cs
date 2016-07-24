@@ -4,14 +4,14 @@ namespace Pathfinding
 {
     public class BreadthFirstSearch
     {
-        public Dictionary<Point, int> Search(Grid grid, Point origin)
+        public Dictionary<Point, int> Search(Map map, Point origin)
         {
-            return Search(grid, origin, null);
+            return Search(map, origin, null);
         }
 
-        public Dictionary<Point, int> Search(Grid grid, Point origin, int? maxMoves)
+        public Dictionary<Point, int> Search(Map map, Point origin, int? maxMoves)
         {
-            if (grid == null || origin == null || !grid.InBounds(origin))
+            if (map == null || origin == null)
             {
                 return null;
             }
@@ -24,9 +24,9 @@ namespace Pathfinding
             while (frontier.Count != 0)
             {
                 Point current = frontier.Dequeue();
-                foreach (Point neighbor in grid.Neighbors(current))
+                foreach (Point neighbor in map.Neighbors(current))
                 {
-                    if (!distance.ContainsKey(neighbor))
+                    if (!distance.ContainsKey(neighbor) && map[neighbor.x, neighbor.y].IsPassable)
                     {
                         int length = distance[current] + 1;
                         if (length > maxMoves)
