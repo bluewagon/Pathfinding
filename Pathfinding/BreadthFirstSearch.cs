@@ -4,12 +4,12 @@ namespace Pathfinding
 {
     public class BreadthFirstSearch
     {
-        public Dictionary<Point, int> Search(Map map, Point origin)
+        public Dictionary<Point, int> SearchDistance(Map map, Point origin)
         {
-            return Search(map, origin, null);
+            return SearchDistance(map, origin, null);
         }
 
-        public Dictionary<Point, int> Search(Map map, Point origin, int? maxMoves)
+        public Dictionary<Point, int> SearchDistance(Map map, Point origin, int? maxMoves)
         {
             if (map == null || origin == null)
             {
@@ -39,6 +39,50 @@ namespace Pathfinding
                 }
             }
             return distance;
+        }
+
+        public Stack<Point> SearchPath(Map map, Point origin, Point destination)
+        {
+            if (map == null || origin == null)
+            {
+                return null;
+            }
+
+            Queue<Point> frontier = new Queue<Point>();
+            frontier.Enqueue(origin);
+            Dictionary<Point, Point> cameFrom = new Dictionary<Point, Point>();
+
+            while (frontier.Count != 0)
+            {
+                Point current = frontier.Dequeue();
+
+                if (current.Equals(destination))
+                {
+                    break;
+                }
+
+                foreach (Point neighbor in map.Neighbors(current))
+                {
+                    if (!cameFrom.ContainsKey(neighbor) && map[neighbor.x, neighbor.y].IsPassable)
+                    {
+                        frontier.Enqueue(neighbor);
+                        cameFrom.Add(neighbor, current);
+                    }
+                }
+            }
+            return GetPathFromSearch(cameFrom, origin, destination);
+        }
+
+        public Stack<Point> GetPathFromSearch(Dictionary<Point, Point> spaces, Point start, Point goal)
+        {
+            Point current = goal;
+            Stack<Point> path = new Stack<Point>();
+            while (!current.Equals(start))
+            {
+                current = spaces[current];
+                path.Push(current);
+            }
+            return path;
         }
     }
 }
