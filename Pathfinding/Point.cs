@@ -31,5 +31,10 @@
                 return (x * 397) ^ y;
             }
         }
+
+        public override string ToString()
+        {
+            return $"<{x},{y}>";
+        }
     }
 }

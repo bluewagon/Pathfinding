@@ -21,7 +21,7 @@ namespace PathfindingTests
         public void AllSpacesOpen()
         {
             Map map = new Map("Level1");
-            var points = search.Search(map, new Point(0, 0));
+            var points = search.SearchDistance(map, new Point(0, 0));
             Assert.IsNotNull(points);
             Assert.AreEqual(100, points.Count);
         }
@@ -30,7 +30,7 @@ namespace PathfindingTests
         public void LimitMoves()
         {
             Map map = new Map("Level1");
-            var points = search.Search(map, new Point(3, 3), 3);
+            var points = search.SearchDistance(map, new Point(3, 3), 3);
             Assert.IsNotNull(points);
             Assert.AreEqual(1 + 4 + 4*2 + 4*3, points.Count);
             Assert.IsNotNull(points.FirstOrDefault(point =>point.Key.Equals(new Point(3, 3)) && point.Value == 0));
@@ -64,10 +64,90 @@ namespace PathfindingTests
         public void IgnoresBlockedSpaces()
         {
             Map map = new Map("Level2");
-            var points = search.Search(map, new Point(0, 0), 10);
+            var points = search.SearchDistance(map, new Point(0, 0), 10);
             Assert.IsNotNull(points);
             Assert.AreEqual(1, points.Count);
             Assert.IsNotNull(points[new Point(0, 0)]);
+        }
+
+        [TestMethod]
+        public void NoMovesLeft()
+        {
+            Map map = new Map("Level1");
+            var points = search.SearchDistance(map, new Point(0, 0), 0);
+            Assert.IsNotNull(points);
+            Assert.AreEqual(1, points.Count);
+            Assert.IsNotNull(points[new Point(0, 0)]);
+        }
+
+        [TestMethod]
+        public void PathSearch()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(0, 0), new Point(2, 1));
+            Assert.IsNotNull(path);
+            Assert.AreEqual(5, path.Count);
+            Assert.AreEqual(new Point(0,0), path.Pop());
+            Assert.AreEqual(new Point(0,1), path.Pop());
+            Assert.AreEqual(new Point(0,2), path.Pop());
+            Assert.AreEqual(new Point(1,2), path.Pop());
+            Assert.AreEqual(new Point(2,2), path.Pop());
+        }
+
+        [TestMethod]
+        public void PathSearch_StartOutOfBounds()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(50, 50), new Point(0, 0));
+            Assert.IsNull(path);
+        }
+
+        [TestMethod]
+        public void PathSearch_GoalOutOfBounds()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(0, 0), new Point(50, 50));
+            Assert.IsNull(path);
+        }
+
+        [TestMethod]
+        public void PathSearch_StartIsNull()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, null, new Point(50, 50));
+            Assert.IsNull(path);
+        }
+
+        [TestMethod]
+        public void PathSearch_GoalIsNull()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(0, 0), null);
+            Assert.IsNull(path);
+        }
+
+        [TestMethod]
+        public void PathSearch_StartIsUnpassable()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(1, 0), new Point(5, 5));
+            Assert.IsNull(path);
+        }
+
+        [TestMethod]
+        public void PathSearch_GoalIsUnpassable()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(0, 0), new Point(1, 0));
+            Assert.IsNull(path);
+        }
+
+        [TestMethod]
+        public void PathSearch_GoalImpossibleToReach()
+        {
+            Map map = new Map("Level3");
+            Stack<Point> path = search.SearchPath(map, new Point(0, 0), new Point(6, 7));
+            Assert.IsNull(path);
         }
     }
 }

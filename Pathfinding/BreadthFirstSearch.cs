@@ -41,9 +41,11 @@ namespace Pathfinding
             return distance;
         }
 
-        public Stack<Point> SearchPath(Map map, Point origin, Point destination)
+        public Stack<Point> SearchPath(Map map, Point origin, Point goal)
         {
-            if (map == null || origin == null)
+            if (map == null || origin == null || goal == null || !map.InBounds(origin) ||
+                    !map.InBounds(goal) || !map[origin.x, origin.y].IsPassable ||
+                    !map[goal.x, goal.y].IsPassable)
             {
                 return null;
             }
@@ -51,13 +53,15 @@ namespace Pathfinding
             Queue<Point> frontier = new Queue<Point>();
             frontier.Enqueue(origin);
             Dictionary<Point, Point> cameFrom = new Dictionary<Point, Point>();
+            bool currentFound = false;
 
             while (frontier.Count != 0)
             {
                 Point current = frontier.Dequeue();
 
-                if (current.Equals(destination))
+                if (current.Equals(goal))
                 {
+                    currentFound = true;
                     break;
                 }
 
@@ -70,7 +74,11 @@ namespace Pathfinding
                     }
                 }
             }
-            return GetPathFromSearch(cameFrom, origin, destination);
+            if (!currentFound)
+            {
+                return null;
+            }
+            return GetPathFromSearch(cameFrom, origin, goal);
         }
 
         public Stack<Point> GetPathFromSearch(Dictionary<Point, Point> spaces, Point start, Point goal)
