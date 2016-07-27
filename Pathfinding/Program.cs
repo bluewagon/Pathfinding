@@ -9,7 +9,10 @@ namespace Pathfinding
             Map map = new Map("Level1");
             BreadthFirstSearch search = new BreadthFirstSearch();
             Dictionary<Point, int> moves = search.SearchDistance(map, new Point(0,0), 7);
-            var path = search.SearchPath(map, new Point(0, 0), new Point(5, 5));
+            var path = search.SearchPath(map, new Point(0, 0), new Point(2,2));
+
+            DijkstraSearch dijkstraSearch = new DijkstraSearch();
+            var dijkstraPath = dSearch.Search(map, new Point(0, 0), new Point(2, 2));
         }
     }
 }
