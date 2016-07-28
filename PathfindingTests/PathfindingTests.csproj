@@ -57,6 +57,7 @@
     <Compile Include="BreadthFirstSearchTests.cs" />
     <Compile Include="DijkstraSearchTests.cs" />
     <Compile Include="MapTests.cs" />
+    <Compile Include="PathfindingUtilitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -78,19 +78,7 @@ namespace Pathfinding
             {
                 return null;
             }
-            return GetPathFromSearch(cameFrom, origin, goal);
-        }
-
-        public Stack<Point> GetPathFromSearch(Dictionary<Point, Point> spaces, Point start, Point goal)
-        {
-            Point current = goal;
-            Stack<Point> path = new Stack<Point>();
-            while (!current.Equals(start))
-            {
-                current = spaces[current];
-                path.Push(current);
-            }
-            return path;
+            return PathfindingUtilities.GetPathFromSearch(cameFrom, origin, goal);
         }
     }
 }

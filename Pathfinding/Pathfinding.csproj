@@ -50,6 +50,7 @@
     <Compile Include="BreadthFirstSearch.cs" />
     <Compile Include="DijkstraSearch.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="PathfindingUtilities.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
