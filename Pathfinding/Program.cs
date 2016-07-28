@@ -12,7 +12,7 @@ namespace Pathfinding
             var path = search.SearchPath(map, new Point(0, 0), new Point(2,2));
 
             DijkstraSearch dijkstraSearch = new DijkstraSearch();
-            var dijkstraPath = dSearch.Search(map, new Point(0, 0), new Point(2, 2));
+            var dijkstraPath = dijkstraSearch.Search(map, new Point(0, 0), new Point(4, 0));
         }
     }
 }

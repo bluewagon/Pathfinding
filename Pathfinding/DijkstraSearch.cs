@@ -23,6 +23,11 @@ namespace Pathfinding
 
                 foreach (Point neighbor in map.Neighbors(current))
                 {
+                    if (!map[neighbor.x, neighbor.y].IsPassable)
+                    {
+                        continue;
+                    }
+
                     int new_cost = costSoFar[current] + map[neighbor.x, neighbor.y].Cost;
                     if (!costSoFar.ContainsKey(neighbor))
                     {
